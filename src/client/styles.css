@@ -1,0 +1,273 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+/* ===== Overlays de animación (gol / tarjeta roja) ===== */
+.fx-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 50;
+  pointer-events: none;
+  background: rgba(2, 6, 23, 0.5);
+  animation:
+    fxIn 0.25s ease-out,
+    fxOut 0.5s ease-in forwards;
+  animation-delay: 0s, 3s;
+}
+.fx-card {
+  position: relative;
+  padding: 2rem 3rem;
+  border-radius: 1.25rem;
+  color: #fff;
+  text-align: center;
+  transform: scale(0.7);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
+  animation: fxPop 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) forwards;
+  max-width: 92vw;
+}
+/* Botón de cierre del overlay. El overlay es pointer-events:none; el botón lo reactiva solo en sí mismo. */
+.fx-x {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.75rem;
+  pointer-events: auto;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border: none;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1;
+  opacity: 0.85;
+  transition: opacity 0.15s ease, background 0.15s ease;
+}
+.fx-x:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.5);
+}
+.fx-goal .fx-card {
+  background: radial-gradient(circle at 50% 25%, #16a34a, #052e16);
+}
+.fx-red .fx-card {
+  background: radial-gradient(circle at 50% 25%, #dc2626, #450a0a);
+}
+.fx-badge {
+  font-size: clamp(3rem, 12vw, 7rem);
+  line-height: 1;
+}
+.fx-title {
+  font-size: clamp(2.25rem, 9vw, 5.5rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.fx-sub {
+  margin-top: 0.75rem;
+  font-size: clamp(1rem, 3vw, 1.6rem);
+  font-weight: 600;
+  opacity: 0.95;
+}
+.fx-score {
+  margin-top: 0.4rem;
+  font-size: clamp(1.25rem, 4vw, 2.1rem);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.fx-reduced {
+  animation: fxIn 0.2s ease-out forwards;
+  background: rgba(2, 6, 23, 0.65);
+}
+.fx-reduced .fx-card {
+  animation: none;
+  transform: none;
+}
+@keyframes fxIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fxOut {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes fxPop {
+  to {
+    transform: scale(1);
+  }
+}
+
+/* ===== Utilidades varias ===== */
+.pulse-dot {
+  animation: pulse 1.4s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+.tabnum {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse-dot {
+    animation: none;
+  }
+}
+
+/* ===== Banner persistente de cupón (alarma de gol) ===== */
+.coupon-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.9rem 1rem;
+  color: #fff;
+  background: linear-gradient(90deg, #15803d, #16a34a 50%, #15803d);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.55);
+  animation: slideDown 0.3s ease-out;
+}
+.coupon-banner .cb-emoji {
+  font-size: 2rem;
+  animation: pulse 1s ease-in-out infinite;
+}
+.coupon-banner .cb-main {
+  min-width: 0;
+}
+.coupon-banner .cb-title {
+  font-size: clamp(1rem, 2.5vw, 1.35rem);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+.coupon-banner .cb-sub {
+  margin-top: 0.15rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0.95;
+}
+.coupon-banner .cb-cta {
+  margin-left: auto;
+  flex: none;
+  background: #fff;
+  color: #14532d;
+  font-weight: 900;
+  padding: 0.6rem 1rem;
+  border-radius: 0.6rem;
+  text-decoration: none;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+.coupon-banner .cb-x {
+  flex: none;
+  margin-left: 0.25rem;
+  background: rgba(0, 0, 0, 0.25);
+  color: #fff;
+  border-radius: 0.5rem;
+  padding: 0.45rem 0.7rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.coupon-banner .cb-cta + .cb-x {
+  margin-left: 0.5rem;
+}
+.coupon-banner:not(:has(.cb-cta)) .cb-x {
+  margin-left: auto;
+}
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* ===== Pestañas de vistas ===== */
+.view-tab {
+  white-space: nowrap;
+  border-radius: 0.5rem;
+  padding: 0.4rem 0.85rem;
+  font-weight: 600;
+  color: #94a3b8;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+.view-tab:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #e2e8f0;
+}
+.view-tab.tab-active {
+  background: #1e293b;
+  color: #fff;
+}
+
+/* ===== Bracket (árbol con líneas de conexión vía overlay SVG) ===== */
+.bk-wrap {
+  overflow-x: auto;
+  padding: 0.5rem 0 1rem;
+}
+.bk-inner {
+  position: relative;
+  display: inline-block;
+  min-width: 100%;
+}
+.bk-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.bk-cols {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 2.5rem;
+  align-items: stretch; /* todas las columnas a la misma altura => las llaves alinean con el punto medio de sus alimentadoras */
+}
+.bk-round {
+  display: flex;
+  flex-direction: column;
+  min-width: 156px;
+}
+.bk-round-head {
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #94a3b8;
+  margin-bottom: 0.5rem;
+}
+.bk-matches {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 0.6rem;
+}

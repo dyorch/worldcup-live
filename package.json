@@ -1,0 +1,29 @@
+{
+  "name": "worldcup-live",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Tablero en tiempo real del Mundial 2026 (Cloudflare Worker + Durable Object + Vite SPA)",
+  "scripts": {
+    "dev": "vite build && wrangler dev",
+    "dev:client": "vite",
+    "build": "vite build",
+    "preview": "wrangler dev",
+    "deploy": "vite build && wrangler deploy",
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.worker.json"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240909.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13",
+    "typescript": "^5.6.2",
+    "vite": "^6.0.0",
+    "vite-plugin-solid": "^2.11.12",
+    "wrangler": "^4.101.0"
+  },
+  "dependencies": {
+    "@solidjs/router": "^0.16.1",
+    "solid-js": "^1.9.14"
+  }
+}

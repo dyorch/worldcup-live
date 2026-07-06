@@ -1,0 +1,37 @@
+name = "worldcup-live"
+main = "src/worker/index.ts"
+compatibility_date = "2025-05-01"
+
+# El Worker controla el enrutado (run_worker_first): /ws, /api/*, /ingest los maneja
+# el código; el resto cae a env.ASSETS.fetch (SPA estático con fallback a index.html).
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+run_worker_first = true
+
+# Durable Object: hub único de tiempo real (WebSocket + polling + diff + broadcast).
+[[durable_objects.bindings]]
+name = "MATCH_HUB"
+class_name = "MatchHub"
+
+# DO con backend SQLite (requerido en el plan gratuito de Cloudflare).
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["MatchHub"]
+
+# Cron 1/min: revive el hub si quedó dormido. El polling sub-minuto lo da el ALARM del DO.
+[triggers]
+crons = ["* * * * *"]
+
+[vars]
+POLL_INTERVAL_LIVE = "2"
+POLL_INTERVAL_IDLE = "60"
+# Web Push: la clave pública VAPID no es secreta. La privada va por `wrangler secret put VAPID_PRIVATE`.
+VAPID_PUBLIC = "BEeJ75j9u46kq455AUNYAGq_N3Vif_Svj2MNyM_6nkrTRj3NuCzdqnrc08xotDpdNWweeZFGWY0GR19N_cvi9_8"
+VAPID_SUBJECT = "mailto:dybsm98@outlook.es"
+
+# Dominio propio.
+[[routes]]
+pattern = "world-cup.dyorch.com"
+custom_domain = true

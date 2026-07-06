@@ -1,0 +1,12 @@
+node_modules
+dist
+.wrangler
+.dev.vars
+.env
+*.local
+.DS_Store
+
+# Notas/documentación de trabajo local — no se publican en el repo
+.claude/
+CLAUDE.md
+**/CLAUDE.md
